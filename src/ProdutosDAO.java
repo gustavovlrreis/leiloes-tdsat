@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProdutosDAO {
@@ -26,9 +27,9 @@ public class ProdutosDAO {
     public boolean cadastrarProduto (ProdutosDTO produto){
         
         
-        conn = new conectaDAO().connectDB();
-        
         try {
+        
+            conn = new conectaDAO().connectDB();
             prep = conn.prepareStatement("INSERT INTO produtos (nome, valor, status) "
                     + "VALUES(?,?,?)");
             
@@ -47,8 +48,25 @@ public class ProdutosDAO {
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
-        
-        return listagem;
+        try {
+            conn = new conectaDAO().connectDB();
+            listagem = new ArrayList<>();
+            prep = conn.prepareStatement("SELECT * from produtos");
+            resultset = prep.executeQuery();
+            //verificar se a consulta encontrou o funcionário com a matrícula informada
+            while (resultset.next()){ // se encontrou o funcionário, vamos carregar os dados
+                ProdutosDTO produtosDTO = new ProdutosDTO();
+                produtosDTO.setId(resultset.getInt("id"));
+                produtosDTO.setNome(resultset.getString("nome"));
+                produtosDTO.setValor(resultset.getInt("valor"));
+                produtosDTO.setStatus(resultset.getString("status"));
+                listagem.add(produtosDTO);
+            }
+            return listagem;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage() + " - " + ex.getMessage());
+            return null;
+        }
     }
     
     
