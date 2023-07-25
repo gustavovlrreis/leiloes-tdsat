@@ -68,43 +68,9 @@ public class ProdutosDAO {
             return null;
         }
     }
-
-    public int venderProduto(Integer id){
-        int prepareStatement;
-        try {
-            conn = new conectaDAO().connectDB();
-            
-            prep = conn.prepareStatement("UPDATE produtos SET status = 'Vendido' "
-                    + "where id = ?");
-            prep.setInt(1, id);
-            prepareStatement = prep.executeUpdate();
-            return prepareStatement; //retornar 1
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage() + " - " + ex.getMessage());
-            return ex.getErrorCode();
-        }
-    }
     
-    public ArrayList<ProdutosDTO> listarProdutosVendidos(){
-        try {
-            conn = new conectaDAO().connectDB();
-            listagem = new ArrayList<>();
-            prep = conn.prepareStatement("SELECT * from produtos WHERE status = 'Vendido'");
-            resultset = prep.executeQuery();
-            //verificar se a consulta encontrou o funcionário com a matrícula informada
-            while (resultset.next()){ // se encontrou o funcionário, vamos carregar os dados
-                ProdutosDTO produtosDTO = new ProdutosDTO();
-                produtosDTO.setId(resultset.getInt("id"));
-                produtosDTO.setNome(resultset.getString("nome"));
-                produtosDTO.setValor(resultset.getInt("valor"));
-                produtosDTO.setStatus(resultset.getString("status"));
-                listagem.add(produtosDTO);
-            }
-            return listagem;
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage() + " - " + ex.getMessage());
-            return null;
-        }
-    }
+    
+    
+        
 }
 
